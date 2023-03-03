@@ -52,7 +52,9 @@ img {
 
 
 #tartar {
-    font-size: 1000px;
+    font-size: 10000px;
+    color:#fff;
+    z-index: 10;
 }
 
 
@@ -105,3 +107,6 @@ img.spiral {
     height: 100vh;
     width: auto;
 }}
+
+
+
