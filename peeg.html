@@ -1,29 +1,58 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>◉ ○ ◌ ◍ ◎ ○ ◐ ◑ ◒ ◓</title>
-        
-          <link rel="shortcut icon" href="img/xtina.png">
-      <meta charset="UTF-8">
-      <script src="js/jquery.min.js"></script>
-      <link href="styles.css" rel="stylesheet">
-      <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"></script>
+  <head>
+    <title>Three.js GLTFLoader Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+      let scene, camera, renderer;
 
-      <link href="styles.css" rel="stylesheet">
-    </head>
-            <body>
-              
-               <div>
+      function init() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xdddddd);
 
-                <model-viewer alt="mi peegita" src="mypeeg.glb" ar environment-image="shared-assets/environments/moon_1k.hdr" poster="shared-assets/models/NeilArmstrong.webp" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+        camera = new THREE.PerspectiveCamera(
+          40,
+          window.innerWidth / window.innerHeight,
+          1,
+          5000
+        );
+        camera.position.set(0, 0, 3);
 
-                </div>
+        let hlight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(hlight);
 
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0, 1, 0);
+        scene.add(directionalLight);
 
-                
-                
-            </body>
-            
-            
-            
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        let loader = new THREE.GLTFLoader();
+        loader.load("mypeeg.glb", function (gltf) {
+          scene.add(gltf.scene);
+        });
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+
+      init();
+      animate();
+    </script>
+  </body>
 </html>
