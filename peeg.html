@@ -44,6 +44,7 @@
 
         let loader = new THREE.GLTFLoader();
         loader.load("mypeeg.glb", function (gltf) {
+          gltf.scene.scale.set(0.5, 0.5, 0.5);
           gltf.scene.traverse(function (child) {
             if (child.isMesh) {
               child.material.transparent = true;
