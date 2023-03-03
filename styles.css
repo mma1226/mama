@@ -1,0 +1,107 @@
+@font-face {
+    font-family: 'Alte';
+    src: url('fonts/AlteHaasGroteskRegular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: var(--background);
+    /* color: black; */
+    color: var(--background);
+    font-family: 'Alte', Arial;
+    /* padding: 10px; */
+    margin: 0;
+    /* font-size: 16px; */
+    /* outline: 1px solid black; */
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+
+
+.bgImg.classPage img.spiral {
+  opacity: .3 !important
+}
+
+.bgImg {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+    z-index: 9;
+    background-color: var(--background);
+}
+
+.portal {
+  transform: scale(1);
+  transition: transform 1s ease-out;
+  display: block;
+  margin-top: -25vh;
+  margin-left: auto;
+  margin-right: auto;
+  height: 150vh;
+  width: 150vh;
+  opacity: .9;
+  background: radial-gradient(var(--primary-color), #fff, #fff);
+}
+
+
+#tartar {
+    font-size: 1000px;
+}
+
+
+.changing:hover {
+    box-shadow: 0 0 25px var(--primary-color) !important;
+    color: #fff !important;
+  }
+
+
+  @media all and (orientation: landscape) {
+    img.spiral {
+        height: auto;
+        width: 100vw;
+    }
+}
+
+@media all and (orientation: portrait) {
+    img.spiral {
+        height: 100vh;
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+
+
+  .portal {
+    display: block;
+    margin-left: -25vw;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 150vw;
+    width: 150vw;
+    opacity: .9;
+    background: radial-gradient(var(--primary-color), #fff, #fff);
+  }
+
+
+
+  .shell {
+    position: relative;
+    /* top: 0px; */
+    left: 0vw;
+    height: 100vh;
+    width: 100vw;
+    z-index: 11;
+  
+}
+img.spiral {
+    height: 100vh;
+    width: auto;
+}}
