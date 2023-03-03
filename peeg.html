@@ -18,6 +18,9 @@
       let scene, camera, renderer;
       let mouse = new THREE.Vector2(), INTERSECTED;
       let raycaster = new THREE.Raycaster();
+      let plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+      let offset = new THREE.Vector3();
+      let selectedObject = null;
 
       function init() {
         scene = new THREE.Scene();
@@ -55,6 +58,8 @@
         });
 
         document.addEventListener("mousemove", onDocumentMouseMove, false);
+        document.addEventListener("mousedown", onDocumentMouseDown, false);
+        document.addEventListener("mouseup", onDocumentMouseUp, false);
       }
 
       function animate() {
@@ -62,35 +67,31 @@
         render();
       }
 
+      function onDocumentMouseDown(event) {
+        event.preventDefault();
+        raycaster.setFromCamera(mouse, camera);
+        let intersects = raycaster.intersectObjects(scene.children, true);
+        if (intersects.length > 0) {
+          selectedObject = intersects[0].object;
+          let intersects = raycaster.intersectObject(plane);
+          offset.copy(intersects[0].point).sub(plane.position);
+        }
+      }
+
+      function onDocumentMouseUp(event) {
+        event.preventDefault();
+        selectedObject = null;
+      }
+
       function onDocumentMouseMove(event) {
         event.preventDefault();
-
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      }
-
-      function render() {
-        raycaster.setFromCamera(mouse, camera);
-
-        let intersects = raycaster.intersectObjects(scene.children, true);
-
-        if (intersects.length > 0) {
-          if (INTERSECTED != intersects[0].object) {
-            if (INTERSECTED)
-              INTERSECTED.material.opacity = 0.5;
-            INTERSECTED = intersects[0].object;
-            INTERSECTED.material.opacity = 1;
-          }
-        } else {
-          if (INTERSECTED) INTERSECTED.material.opacity = 0.5;
-          INTERSECTED = null;
+        if (selectedObject) {
+          raycaster.setFromCamera(mouse, camera);
+          let intersects = raycaster.intersectObject(plane);
+          selectedObject.position.copy(intersects[0].point.sub(offset));
         }
-
-        renderer.render(scene, camera);
       }
 
-      init();
-      animate();
-    </script>
-  </body>
-</html>
+      function render
