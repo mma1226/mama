@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js Example</title>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <script src="js/three.min.js"></script>
+    <script>
+        // create the scene, camera and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // create the sphere and torus
+        const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const torusGeometry = new THREE.TorusGeometry(1, 0.4, 32, 100);
+
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0062 });
+
+        const sphere = new THREE.Mesh(sphereGeometry, material);
+        const torus = new THREE.Mesh(torusGeometry, material);
+
+        scene.add(sphere);
+        scene.add(torus);
+
+        // position the camera and objects
+        camera.position.z = 5;
+        sphere.position.z = -2;
+        torus.position.z = 2;
+
+        // animate the objects
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // morph the sphere into a torus
+            const t = Date.now() * 0.001;
+            const radius = 1.5;
+            const tube = 0.4;
+            const p = 1.8;
+            const q = 1;
+            const sphereScale = Math.sin(t) * 0.5 + 0.5;
+            const torusScale = 1 - sphereScale;
+            const morphRadius = sphereScale * radius + torusScale * tube;
+            const morphTube = sphereScale * tube + torusScale * p;
+            const morphSegmentsR = sphereScale * 32 + torusScale * 32;
+            const morphSegmentsT = sphereScale * 32 + torusScale * q;
+
+            sphere.scale.set(sphereScale, sphereScale, sphereScale);
+            torus.scale.set(torusScale, torusScale, torusScale);
+            torus.geometry.dispose();
+            torus.geometry = new THREE.TorusGeometry(morphRadius, morphTube, morphSegmentsR, morphSegmentsT);
+
+            sphere.rotation.x += 0.01;
+            sphere.rotation.y += 0.01;
+            torus.rotation.x += 0.01;
+            torus.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
